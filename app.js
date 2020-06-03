@@ -2,32 +2,82 @@
  * Example store structure
  */
 const store = {
-  // 5 or more questions are required
-  questions: [
-    {
-      question: 'What color is broccoli?',
-      answers: [
-        'red',
-        'orange',
-        'pink',
-        'green'
-      ],
-      correctAnswer: 'green'
-    },
-    {
-      question: 'What is the current year?',
-      answers: [
-        '1970',
-        '2015',
-        '2019',
-        '2005'
-      ],
-      correctAnswer: '2019'
-    }
-  ],
-  quizStarted: false,
-  questionNumber: 0,
-  score: 0
+	// 5 or more questions are required
+	questions: [
+		{
+			question: 'What color is broccoli?',
+			answers: [
+				'red',
+				'orange',
+				'pink',
+				'green'
+			],
+			correctAnswer: 'green'
+		},
+		{
+			question: 'What is the current year?',
+			answers: [
+				'1970',
+				'2015',
+				'2019',
+				'2005'
+			],
+			correctAnswer: '2019'
+		},
+		{
+			question: 'What is a dolpin?',
+			answers: [
+				'Person',
+				'Place',
+				'Thing',
+				'Animal'
+			],
+			correctAnswer: 'Animal'
+		},
+		{
+			question: 'What is your level of pain?',
+			answers: [
+				'No pain',
+				'Discomfort',
+				'Intense',
+				'Unbearable'
+			],
+			correctAnswer: '2019'
+		},
+		{
+			question: 'What is Winnie the Pooh?',
+			answers: [
+				'A cartoon',
+				'A stuffed bear',
+				'A living creature',
+				'A severe delusion'
+			],
+			correctAnswer: 'A cartoon'
+		},
+		{
+			question: 'What is Javascript?',
+			answers: [
+				'A hip new brand of coffee',
+				'A type of language',
+				'A writers tool',
+				'A tool actors use to memorize lines'
+			],
+			correctAnswer: 'A type of language'
+		},
+		{
+			question: 'What is the hero\'s name in the Karate kid?',
+			answers: [
+				'Daniel Laruso',
+				'Johnny Lawrence',
+				'Tim Burton',
+				'Luke Skywalker'
+			],
+			correctAnswer: 'Johnny Lawrence'
+		},
+	],
+	quizStarted: false,
+	questionNumber: 0,
+	score: 0
 };
 
 /**
