@@ -80,6 +80,10 @@ const store = {
 	score: 0
 };
 
+let currentQuestion;
+let currentAnswers;
+let currentCorrectAnswer;
+
 let html = `
 	<div class="wrapper">
 		<div id="quiz-container">
@@ -106,56 +110,79 @@ const render = () => {
 	
 	$( 'main' ).html ( html ) ;
 
-	
-
 	console.log ( 'render completed' );
 
 };
 
 const getContent = () => {
-// This function is responsible for initializing the 
-// variable we need to work with and giving them data.
+/* 
+	This function is responsible for initializing the 
+	variable we need to work with and giving them data.
+*/
 
 	console.log ( 'pickQuestion started' );
 
 	// Creation of the variables with the info we need to work with:
 
-	// Typeof String
-	const currentQuestion = store.questions [ store.questionNumber ].question;
+	currentQuestion = store.questions [ store.questionNumber ].question;
 
-	// Typeof Array
-	const currentAnswers = store.questions [ store.questionNumber ].answers;
-	
-	// Typeof String
-	const currentCorrectAnswer = store.questions [ store.questionNumber ].correctAnswer;
+	currentAnswers = store.questions [ store.questionNumber ].answers;
+
+	currentCorrectAnswer = store.questions [ store.questionNumber ].correctAnswer;
 
 	console.log ( 'pickQuestion completed' );
 
 };
 
-const generateHtml = ( currentQuestion) => {
+const generateHtml = () => {
 // Story
 
 	console.log ( 'generateHtml started' );
 
-	console.log ( currentQuestion );
-	//html = `<div class="wrapper"><div id="quiz-container">testing</div></div>`;
+	// Iteration here to build the <li>s for insertion
+
+	let liString;
+
+	liString = currentAnswers.forEach( ( item ) => {
+		console.log ( item );
+		liString += `<li>${ item }</li>`
+	});
+
+	html = `
+		<div class="wrapper">
+			<div id="quiz-container">
+				<form id="quiz-app-form" action="http://someform.php">
+					<legend id="quiz-app-form-legend">${ currentQuestion }</legend>
+						<ul id="quiz-app-form-ul"> 
+							${ liString }
+						</ul>
+						<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
+				</form>
+			</div>
+		</div>
+	`;
 
 	console.log ( 'generateHtml completed' );
 
 };
 
-updateStore () {
+const updateStore = () => {
 // Story
+
+	console.log ( 'updateStore started' );
+
+	//console.log ( quizStarted );
 
 	// If quizStarted == True, do nothing
 
 	// If quizStarted == False, 
-	if ( !store.quizStarted ) {
+	//if ( !store.quizStarted ) {
 		//console.log ( currentQuestion );
 		//console.log ( currentAnswers );
 		//console.log ( currentCorrectAnswer );
-	}
+	//}
+
+	console.log ( 'updateStore completed' );
 
 };
 
@@ -165,10 +192,14 @@ const buildQuiz = ( ) => {
 
 	console.log ( 'buildQuiz started' );
 	
-	getContent ();
-	generateHtml ();
-	updateStore ();
-	render ();
+	//if ( store.quizStarted !== false ) { 
+		
+		getContent ();
+		generateHtml ();
+		updateStore ();
+		render ();
+
+	//}
 
 	$( '#quiz-app-form' ).submit( ( e ) => {
 	
