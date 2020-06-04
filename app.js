@@ -80,26 +80,19 @@ const store = {
 	score: 0
 };
 
-/*
-<div class="wrapper">
-
-<div id="quiz-container">
-	
-	<form id="quiz-app-form" action="http://someform.php">
+let html = `
+	<div class="wrapper">
+		<div id="quiz-container">
+			<form id="quiz-app-form" action="http://someform.php">
+				<legend id="quiz-app-form-legend">Click the button below if you dare...</legend>
+					<ul id="quiz-app-form-ul"> 
 		
-		<legend id="quiz-app-form-legend"></legend>
-		<ul id="quiz-app-form-ul"> 
-		
-		</ul>
-		<button type="submit" id="quiz-app-form-submit-button">Start Quiz</button>
-
-	</form>
-
-</div>
-
-</div>
-*/
-
+					</ul>
+					<button type="submit" id="quiz-app-form-submit-button">Begin</button>
+			</form>
+		</div>
+	</div>
+`;
 
 const render = () => {
 /*
@@ -110,8 +103,6 @@ const render = () => {
 */
 
 	console.log ( 'render started' );
-
-	const html = `<div class="wrapper"><div id="quiz-container">testing</div></div>`;
 	
 	$( 'main' ).html ( html ) ;
 
@@ -119,10 +110,12 @@ const render = () => {
 
 }
 
-const pickQuestion = ( questions ) => {
+const getContent = ( questions ) => {
 // Story
 
 	console.log ( 'pickQuestion started' );
+
+	// If initial load
 
 	console.log ( 'pickQuestion completed' );
 
@@ -133,15 +126,28 @@ const generateHtml = ( currentQuestion) => {
 
 	console.log ( 'generateHtml started' );
 
+	//html = `<div class="wrapper"><div id="quiz-container">testing</div></div>`;
+
 	console.log ( 'generateHtml completed' );
 
 };
 
-const buildQuiz = () => {
-// Story
+const buildQuiz = ( ) => {
+// This function is responsible for calling all sub functions responsible
+// for a function quiz app.
 
 	console.log ( 'buildQuiz started' );
 	
+	$( '#quiz-app-form' ).submit( ( e ) => {
+	
+		e.preventDefault ();
+	
+		buildQuiz ( false );
+	
+	});
+		
+	getContent ();
+	generateHtml ();
 	render ();
 
 	// Quiz complete ?
@@ -150,13 +156,5 @@ const buildQuiz = () => {
 
 }
 
-$( '#quiz-app-form' ).submit( ( e ) => {
-	
-	e.preventDefault ();
-
-	buildQuiz ();
-
-});
-
 // when the page loads, call `buildQuiz`.
-$(buildQuiz);
+$( buildQuiz );

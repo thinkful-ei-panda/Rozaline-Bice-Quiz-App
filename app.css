@@ -10,7 +10,7 @@ header {
 main {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100%;
   border: 1px solid #fff;
@@ -21,6 +21,7 @@ h1 {
   border: 1px solid #fff;
   border-radius: 10px;
   color: #fff;
+  padding: 10px
 }
 
 ul  {
@@ -28,17 +29,30 @@ ul  {
 }
 
 .wrapper {
-  display: flex;
+  width: auto;
+  margin: 20px;
 }
 
 #quiz-container {
-  flex: 1;
   border: 1px solid #fff;
   border-radius: 10px;
   color: #fff;
+  padding: 20px;
   text-align: center;
 }
 
+#quiz-app-form-submit-button {
+  background-color: #000;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 10px;
+  color: #fff;
+}
+
+#quiz-app-form-submit-button:hover {
+  background-color: #fff;
+  color: #000;
+}
 .gist{
   position: absolute;
   bottom: 0;
