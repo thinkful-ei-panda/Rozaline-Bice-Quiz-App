@@ -7,10 +7,10 @@ const store = {
 		{
 			question: 'What color is broccoli?',
 			answers: [
-				'red',
-				'orange',
-				'pink',
-				'green'
+				 'red', 
+				 'orange',
+				 'pink',
+				 'green'
 			],
 			correctAnswer: 'green'
 		},
@@ -106,3 +106,104 @@ const store = {
 /********** EVENT HANDLER FUNCTIONS **********/
 
 // These functions handle events (submit, click, etc)
+
+
+const render = () => {
+// Story
+
+	console.log ( 'render started' );
+
+	// Local array of questions.
+	const questions = [...store.questions];
+
+	// Check if quiz started, if true, move on to pickQuestion.
+
+	//if ( !(store.quizStarted) ) $('#quiz-container').html( pickQuestion ( questions ) );
+	const currentQuestion = pickQuestion ( questions );
+	
+	console.log ( 'pickQuestion completed' );
+
+	// Increment the store.questionNumber for the next question.
+
+	store.questionNumber++;
+
+	// Build the relevant html for that question.
+
+	generateHtml ( currentQuestion );
+
+	console.log ( 'generateHtml completed' );
+
+	// Render html to the page.
+
+	//$( '#quiz-app-form' ).html ( html );
+
+	console.log ( 'render completed' );
+
+}
+
+const pickQuestion = ( questions ) => {
+// Story
+
+	console.log ( 'pickQuestion started' );
+
+	// Determine the right question object.
+
+	// Use the questionNumber to identify the correct object in the array and return it.
+
+	return questions [ store.questionNumber ];
+
+}
+
+const generateHtml = ( currentQuestion) => {
+// Story
+
+	console.log ( 'generateHtml started' );
+
+	// Build the HTML for displaying the question and answers.
+
+	console.log ( currentQuestion.question );
+
+	console.log ( typeof currentQuestion.answers[0] );
+
+	console.log ( currentQuestion.answers[0] );
+
+	
+	$( '#quiz-app-form-legend' ).html ( currentQuestion.question );
+
+	// Loop through the currentQuestion.answers array
+
+	const answers = function () {
+		currentQuestion.answers.foreach ( ( item ) => {
+			console.log ( item );
+			return `<li>${item}<li>`;
+		});
+	}
+
+	// Write the html
+	$( '#quiz-app-form-ul' ).html ( answers );
+
+	$( '#quiz-app-form-submit-button' ).html ( 'Make a selection and press enter' );
+	
+};
+
+const buildQuiz = () => {
+// Story
+	
+	$( '#quiz-app-form' ).submit( ( e ) => {
+	
+		e.preventDefault ();
+
+		render ();
+
+		// Handle answer recording ( Still Need to determine the logic here ).
+
+		// Grading the quiz  ( Still need to determine the logic here ).
+
+	});
+	
+	console.log ( 'buildQuiz completed' );
+
+}
+
+// when the page loads, call `buildQuiz`.
+$(buildQuiz);

@@ -6,3 +6,48 @@
   * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
   *
 */
+
+ul{
+  list-style-type:none;
+}
+
+main{
+  height: 100%;
+  width: 100%;
+}
+
+.wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #000;
+  border-radius: 10px;
+}
+
+#start-quiz-container{
+  flex: 1;
+  color: #000;
+}
+
+#start-quiz-container:hover{
+  flex: 1;
+  background-color: #000;
+  color: #fff;
+  cursor: pointer;
+}
+
+#quiz-app-form-container{
+  display: none;
+}
+
+#quiz-app-form{
+
+}
+
+.gist{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
