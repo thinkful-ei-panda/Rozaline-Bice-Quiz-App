@@ -9,14 +9,14 @@
 
 #### The quiz should:
 
-#### Start with an initial start screen.
+* Start with an initial start screen.
 
-#### A button click should start the test.
+* A button click should start the quiz.
 
-#### At this point the first question should be displayed.
+* At this point the first question should be displayed.
 
-#### After answering the question a button click will render the next question.
+* After answering the question a button click will render the next question.
 
-#### This process will continue until all questions have been answered.
+* This process will continue until all questions have been answered.
 
-#### Finally, a screen should be rendered confirming completion of the quiz.
+* Finally, a screen should be rendered confirming completion of the quiz.
