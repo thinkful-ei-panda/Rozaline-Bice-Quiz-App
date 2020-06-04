@@ -106,55 +106,81 @@ const render = () => {
 	
 	$( 'main' ).html ( html ) ;
 
+	
+
 	console.log ( 'render completed' );
 
-}
+};
 
-const getContent = ( questions ) => {
-// Story
+const getContent = () => {
+// This function is responsible for initializing the 
+// variable we need to work with and giving them data.
 
 	console.log ( 'pickQuestion started' );
 
-	// If initial load
+	// Creation of the variables with the info we need to work with:
+
+	// Typeof String
+	const currentQuestion = store.questions [ store.questionNumber ].question;
+
+	// Typeof Array
+	const currentAnswers = store.questions [ store.questionNumber ].answers;
+	
+	// Typeof String
+	const currentCorrectAnswer = store.questions [ store.questionNumber ].correctAnswer;
 
 	console.log ( 'pickQuestion completed' );
 
-}
+};
 
 const generateHtml = ( currentQuestion) => {
 // Story
 
 	console.log ( 'generateHtml started' );
 
+	console.log ( currentQuestion );
 	//html = `<div class="wrapper"><div id="quiz-container">testing</div></div>`;
 
 	console.log ( 'generateHtml completed' );
 
 };
 
+updateStore () {
+// Story
+
+	// If quizStarted == True, do nothing
+
+	// If quizStarted == False, 
+	if ( !store.quizStarted ) {
+		//console.log ( currentQuestion );
+		//console.log ( currentAnswers );
+		//console.log ( currentCorrectAnswer );
+	}
+
+};
+
 const buildQuiz = ( ) => {
 // This function is responsible for calling all sub functions responsible
-// for a function quiz app.
+// for a functioning quiz app.
 
 	console.log ( 'buildQuiz started' );
 	
+	getContent ();
+	generateHtml ();
+	updateStore ();
+	render ();
+
 	$( '#quiz-app-form' ).submit( ( e ) => {
 	
 		e.preventDefault ();
 	
-		buildQuiz ( false );
+		buildQuiz ();
 	
 	});
-		
-	getContent ();
-	generateHtml ();
-	render ();
-
-	// Quiz complete ?
 
 	console.log ( 'buildQuiz completed' );
 
-}
+};
 
 // when the page loads, call `buildQuiz`.
 $( buildQuiz );
