@@ -80,62 +80,31 @@ const store = {
 	score: 0
 };
 
-/**
- * 
- * Technical requirements:
- * 
- * Your app should include a render() function, that regenerates the view each time the store is updated. 
- * See your course material, consult your instructor, and reference the slides for more details.
- *
- * NO additional HTML elements should be added to the index.html file.
- *
- * You may add attributes (classes, ids, etc) to the existing HTML elements, or link stylesheets or additional scripts if necessary
- *
- * SEE BELOW FOR THE CATEGORIES OF THE TYPES OF FUNCTIONS YOU WILL BE CREATING 👇
- * 
- */
+/*
+<div class="wrapper">
 
-/********** TEMPLATE GENERATION FUNCTIONS **********/
+<div id="quiz-container">
+	
+	<form id="quiz-app-form" action="http://someform.php">
+		
+		<legend id="quiz-app-form-legend"></legend>
+		<ul id="quiz-app-form-ul"> 
+		
+		</ul>
+		<button type="submit" id="quiz-app-form-submit-button">Start Quiz</button>
 
-// These functions return HTML templates
+	</form>
 
-/********** RENDER FUNCTION(S) **********/
+</div>
 
-// This function conditionally replaces the contents of the <main> tag based on the state of the store
-
-/********** EVENT HANDLER FUNCTIONS **********/
-
-// These functions handle events (submit, click, etc)
+</div>
+*/
 
 
 const render = () => {
 // Story
 
 	console.log ( 'render started' );
-
-	// Local array of questions.
-	const questions = [...store.questions];
-
-	// Check if quiz started, if true, move on to pickQuestion.
-
-	//if ( !(store.quizStarted) ) $('#quiz-container').html( pickQuestion ( questions ) );
-	const currentQuestion = pickQuestion ( questions );
-	
-	console.log ( 'pickQuestion completed' );
-
-	// Increment the store.questionNumber for the next question.
-
-	store.questionNumber++;
-
-	// Build the relevant html for that question.
-
-	generateHtml ( currentQuestion );
-
-	console.log ( 'generateHtml completed' );
-
-	// Render html to the page.
-
-	//$( '#quiz-app-form' ).html ( html );
 
 	console.log ( 'render completed' );
 
@@ -146,11 +115,7 @@ const pickQuestion = ( questions ) => {
 
 	console.log ( 'pickQuestion started' );
 
-	// Determine the right question object.
-
-	// Use the questionNumber to identify the correct object in the array and return it.
-
-	return questions [ store.questionNumber ];
+	console.log ( 'pickQuestion completed' );
 
 }
 
@@ -159,35 +124,13 @@ const generateHtml = ( currentQuestion) => {
 
 	console.log ( 'generateHtml started' );
 
-	// Build the HTML for displaying the question and answers.
+	console.log ( 'generateHtml completed' );
 
-	console.log ( currentQuestion.question );
-
-	console.log ( typeof currentQuestion.answers[0] );
-
-	console.log ( currentQuestion.answers[0] );
-
-	
-	$( '#quiz-app-form-legend' ).html ( currentQuestion.question );
-
-	// Loop through the currentQuestion.answers array
-
-	const answers = function () {
-		currentQuestion.answers.foreach ( ( item ) => {
-			console.log ( item );
-			return `<li>${item}<li>`;
-		});
-	}
-
-	// Write the html
-	$( '#quiz-app-form-ul' ).html ( answers );
-
-	$( '#quiz-app-form-submit-button' ).html ( 'Make a selection and press enter' );
-	
 };
 
 const buildQuiz = () => {
 // Story
+	console.log ( 'buildQuiz started' );
 	
 	$( '#quiz-app-form' ).submit( ( e ) => {
 	
@@ -195,9 +138,7 @@ const buildQuiz = () => {
 
 		render ();
 
-		// Handle answer recording ( Still Need to determine the logic here ).
-
-		// Grading the quiz  ( Still need to determine the logic here ).
+		// Quiz complete ?
 
 	});
 	
