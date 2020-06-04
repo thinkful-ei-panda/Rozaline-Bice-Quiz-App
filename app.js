@@ -102,9 +102,18 @@ const store = {
 
 
 const render = () => {
-// Story
+/*
+	This function is responsible for finding the relevant
+	information to be displayed and compiling that within html.
+	Finally, injecting that compilation into the main element
+	within the HTML document body.
+*/
 
 	console.log ( 'render started' );
+
+	const html = `<div class="wrapper"><div id="quiz-container">testing</div></div>`;
+	
+	$( 'main' ).html ( html ) ;
 
 	console.log ( 'render completed' );
 
@@ -130,21 +139,24 @@ const generateHtml = ( currentQuestion) => {
 
 const buildQuiz = () => {
 // Story
+
 	console.log ( 'buildQuiz started' );
 	
-	$( '#quiz-app-form' ).submit( ( e ) => {
-	
-		e.preventDefault ();
+	render ();
 
-		render ();
+	// Quiz complete ?
 
-		// Quiz complete ?
-
-	});
-	
 	console.log ( 'buildQuiz completed' );
 
 }
+
+$( '#quiz-app-form' ).submit( ( e ) => {
+	
+	e.preventDefault ();
+
+	buildQuiz ();
+
+});
 
 // when the page loads, call `buildQuiz`.
 $(buildQuiz);

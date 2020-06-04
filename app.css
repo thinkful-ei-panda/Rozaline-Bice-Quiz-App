@@ -1,49 +1,42 @@
-/* Your styles should be mobile-first and responsive */
-
-/** 
-  * If you are unclear on how to utilize a mobile-first, responsive technique to write your CSS, here is an example: 
-  *
-  * https://github.com/andreacardybailey/responsive_example/blob/master/styles/responsive-base.css 
-  *
-*/
-
-ul{
-  list-style-type:none;
+body {
+  background-color: #000;
+  padding: 20px;
 }
 
-main{
-  height: 100%;
-  width: 100%;
+header {
+  text-align: center;
 }
 
-.wrapper{
+main {
   display: flex;
   flex-direction: column;
   justify-content: center;
   height: 100%;
   width: 100%;
-  border: 1px solid #000;
+  border: 1px solid #fff;
   border-radius: 10px;
 }
 
-#start-quiz-container{
-  flex: 1;
-  color: #000;
-}
-
-#start-quiz-container:hover{
-  flex: 1;
-  background-color: #000;
+h1 {
+  border: 1px solid #fff;
+  border-radius: 10px;
   color: #fff;
-  cursor: pointer;
 }
 
-#quiz-app-form-container{
-  display: none;
+ul  {
+  list-style-type: none;
 }
 
-#quiz-app-form{
+.wrapper {
+  display: flex;
+}
 
+#quiz-container {
+  flex: 1;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
 }
 
 .gist{
