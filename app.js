@@ -141,11 +141,13 @@ const generateHtml = () => {
 
 	// Iteration here to build the <li>s for insertion
 
-	let liString;
+	if ( store.quizStarted === true ) {
+	let liString = '';
 
-	liString = currentAnswers.forEach( ( item ) => {
-		console.log ( item );
-		liString += `<li>${ item }</li>`
+	currentAnswers.forEach( ( item ) => {
+
+		liString += `<li>${item}</li>`;
+
 	});
 
 	html = `
@@ -161,50 +163,45 @@ const generateHtml = () => {
 			</div>
 		</div>
 	`;
-
+	}
 	console.log ( 'generateHtml completed' );
 
 };
 
-const updateStore = () => {
-// Story
+const updateQuestionNumber = () => {
+/* 
 
+	This function will update the questionNumber variable
+	allowing us to move to the next question.
+
+*/
 	console.log ( 'updateStore started' );
 
-	//console.log ( quizStarted );
-
-	// If quizStarted == True, do nothing
-
-	// If quizStarted == False, 
-	//if ( !store.quizStarted ) {
-		//console.log ( currentQuestion );
-		//console.log ( currentAnswers );
-		//console.log ( currentCorrectAnswer );
-	//}
+	if ( store.quizStarted !== false ) store.questionNumber++,
 
 	console.log ( 'updateStore completed' );
 
 };
 
-const buildQuiz = ( ) => {
+const buildQuiz = () => {
 // This function is responsible for calling all sub functions responsible
 // for a functioning quiz app.
 
 	console.log ( 'buildQuiz started' );
-	
-	//if ( store.quizStarted !== false ) { 
 		
-		getContent ();
-		generateHtml ();
-		updateStore ();
-		render ();
-
-	//}
+	getContent ();
+	generateHtml ();
+	updateQuestionNumber ( );
+	// updateScore ();
+		// if ( currentAnswer === currentCorrectAnswer ) store.score++;
+	render ();
 
 	$( '#quiz-app-form' ).submit( ( e ) => {
 	
 		e.preventDefault ();
 	
+		if ( store.quizStarted === false ) store.quizStarted = true;
+
 		buildQuiz ();
 	
 	});
