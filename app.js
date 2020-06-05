@@ -45,6 +45,7 @@ const store = {
 let currentQuestion;
 let currentAnswers;
 let currentCorrectAnswer;
+let selectedAnswer;
 
 let html = `
 	<div class="wrapper">
@@ -94,60 +95,136 @@ const getContent = () => {
   console.log ( 'pickQuestion completed' );
 };
 
-const generateHtml = () => {
+const generateHtml = ( option ) => {
 /* 
 
 	This function handles building the html for injection to the page.
 
 */
 
-  console.log ( 'generateHtml started' );
+	console.log ( 'generateHtml started' );
 
-  // Iteration here to build the <li>s for insertion
+	if ( option === 'incorrect' ) {
 
-  if ( store.quizStarted === true ) {
-    let liString = '';
-
-    currentAnswers.forEach ( ( item, index ) => {
-	  liString += `<li><input class="quiz-app-form-button" id="form-button-${ index }" type="button" value="${ item }" onclick="checkQuestion( '#form-button-${ index }' )" ></input></li>`;
-    });
-
-    html = `
-		<div class="wrapper">
-			<div id="quiz-container">
-				<form id="quiz-app-form" action="http://someform.php">
-					<legend id="quiz-app-form-legend">${ currentQuestion }</legend>
-						<ul id="quiz-app-form-ul"> 
-							${ liString }
-						</ul>
-						<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
-				</form>
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<h2>Incorrect!</h2>
+					<p>You currently have ${ store.score } answers.</p>
+					<p>Your next answer is loading in 3 seconds</p>
+					<p id="countdown"></p>
+				</div>
 			</div>
-		</div>
-	`;
-  }
+		`;
 
-  console.log ( 'generateHtml completed' );
+		return;
+
+	}
+
+	if ( store.quizStarted === true ) {
+		let liString = '';
+
+		// Iteration here to build the <li>s for insertion into the output HTML.
+
+		currentAnswers.forEach ( ( item, index ) => {
+
+			liString += `<li><input class="quiz-app-form-button" id="form-button-${ index }" type="button" value="${ item }" onclick="highlightSelection( '#form-button-${ index }' )" ></input></li>`;
+
+		});
+	
+		// HTML for injection.
+
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<form id="quiz-app-form" action="http://someform.php">
+						<legend id="quiz-app-form-legend">${ currentQuestion }</legend>
+							<ul id="quiz-app-form-ul"> 
+								${ liString }
+							</ul>
+							<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
+					</form>
+				</div>
+			</div>
+		`;
+	}
+
+	console.log ( 'generateHtml completed' );
 
 };
 
-const updateQuestionNumber = () => {
-/* 
+const updateStore = ( option ) => {
+/*
 
-	This function will update the questionNumber variable
-	allowing us to move to the next question.
+	This function will take in a variable and
+	based on that will update the store property
+	accordingly.
+
+*/
+	console.log ( 'updateStore started' );
+
+	// Update the quizStarted property when the quiz begins.
+
+	if ( store.quizStarted === false && option === 'x' ) store.quizStarted = true;
+
+	// Update questionNumber property in the store.
+	
+  	else if ( store.quizStarted !== false ) store.questionNumber++;
+  
+  	console.log ( store.questionNumber );
+
+	console.log ( 'updateStore completed' );
+
+}
+
+const highlightSelection = ( btn ) => {
+/*
+
+	This function changes button css to
+	visually show focus on the currently
+	selected answer. It also stores the
+	value of the currently selected question
+	in the selectedAnswer variable.
 
 */
 
-  console.log ( 'updateStore started' );
+	console.log ( 'highlightSelection started' );
+		
+	// Reset any previous selections highlight
 
-  if ( store.quizStarted !== false ) store.questionNumber++;
-  
-  console.log ( 'updateStore completed' );
+	$( '.quiz-app-form-button' ).css( 'background-color', '#000' );
 
-};
+	$( '.quiz-app-form-button' ).css( 'color', '#fff' );
 
-const checkQuestion = ( btn ) => {
+	// Highlight the selected answer.
+
+	$( btn ).css( 'background-color', '#fff' );
+
+	$( btn ).css( 'color', '#000' );
+
+	// Store the answer for use.
+
+	selectedAnswer = $( btn ).val ();
+
+	console.log ( 'highlightSelection completed' );
+
+}
+
+const checkScreen = ( btn ) => {
+/*
+
+	This function displays a screen indicated an
+	incorrect answer has been submitted. It then
+	performs a countdown for 3 seconds before moving
+	to the next question.
+
+*/
+
+
+
+}
+
+const checkAnswer = () => {
 /*
 
 	This function is passed the relevant button's id,
@@ -156,17 +233,33 @@ const checkQuestion = ( btn ) => {
 
 */
 
-  console.log ( 'checkQuestion started' );
- 
-  let pickedQuestion = $( btn ).val();
+	console.log ( 'checkAnswer started' );
 
-  if ( pickedQuestion === currentCorrectAnswer ) alert( 'Correct' );
- 
-  console.log ( 'checkQuestion completed' );
+	// Checks for initial run.
+
+	if ( selectedAnswer !== undefined ) {
+	
+		console.log ( selectedAnswer);
+		console.log ( currentCorrectAnswer);
+		
+
+	// Adjust the store.score property to keep track of incorrect answers.
+
+		if ( selectedAnswer !== currentCorrectAnswer ) {
+		
+			//store.score++;
+
+			generateHtml( 'incorrect' );
+	
+		}
+
+	}
+
+	console.log ( 'checkAnswer completed' );
 
 };
 
-const buildQuiz = () => {
+const buildQuiz = ( option ) => {
 /* 
 
 	This function is responsible for calling all sub functions responsible
@@ -174,28 +267,23 @@ const buildQuiz = () => {
 
 */
 
-  console.log ( 'buildQuiz started' );
+	console.log ( 'buildQuiz started' );
 
-  getContent ();
-  generateHtml ();
-  updateQuestionNumber ();
-  // updateScore ();
-  // if ( currentAnswer === currentCorrectAnswer ) store.score++;
-  render ();
+	getContent ();
+	generateHtml ();
+	updateStore ( option );
+	checkAnswer ();
+	render ();
 
-  $( '#quiz-app-form' ).submit ( e => {
+	$( '#quiz-app-form' ).submit ( e => {
 
-    e.preventDefault ();
+		e.preventDefault ();
+		
+		buildQuiz ( 'x' );
 
-	// Change the value of the quizStarted property when the quiz begins.
+	});
 
-    if (store.quizStarted === false) store.quizStarted = true;
-
-	buildQuiz();
-	
-  });
-
-  console.log ( 'buildQuiz completed' );
+	console.log ( 'buildQuiz completed' );
 
 };
 
