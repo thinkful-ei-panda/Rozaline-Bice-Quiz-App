@@ -54,13 +54,13 @@ li {
   border-radius: 10px;
   padding: 6px;
   color: #fff;
+  cursor: pointer;
 }
 
 .quiz-app-form-button:hover {
   background-color: #fff;
   color: #000;
-  cursor: pointer;
-}
+} 
 
 #quiz-app-form-submit-button {
   background-color: #000;

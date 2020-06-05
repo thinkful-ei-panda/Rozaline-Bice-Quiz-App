@@ -1,6 +1,3 @@
-/**
- * Example store structure
- */
 const store = {
   // 5 or more questions are required
   questions: [
@@ -111,8 +108,8 @@ const generateHtml = () => {
   if ( store.quizStarted === true ) {
     let liString = '';
 
-    currentAnswers.forEach ( item => {
-	  liString += `<li><input class="quiz-app-form-button" type="button" value="${ item }"></input></li>`;
+    currentAnswers.forEach ( ( item, index ) => {
+	  liString += `<li><input class="quiz-app-form-button" id="form-button-${ index }" type="button" value="${ item }" onclick="checkQuestion( '#form-button-${ index }' )" ></input></li>`;
     });
 
     html = `
@@ -129,7 +126,9 @@ const generateHtml = () => {
 		</div>
 	`;
   }
+
   console.log ( 'generateHtml completed' );
+
 };
 
 const updateQuestionNumber = () => {
@@ -151,19 +150,20 @@ const updateQuestionNumber = () => {
 const checkQuestion = ( btn ) => {
 /*
 
-	Story Here
+	This function is passed the relevant button's id,
+	the value of the button is the selected answer,
+	that value is then compared to the correctAnswer property.
 
 */
 
   console.log ( 'checkQuestion started' );
  
-  console.log ( btn );
-  
-  //console.log(btn.html());
-  
-  if ( $( '#quiz-app-form-ul li' ).html () === currentCorrectAnswer ) alert( 'Correct' );
+  let pickedQuestion = $( btn ).val();
+
+  if ( pickedQuestion === currentCorrectAnswer ) alert( 'Correct' );
  
   console.log ( 'checkQuestion completed' );
+
 };
 
 const buildQuiz = () => {
@@ -187,47 +187,13 @@ const buildQuiz = () => {
 
     e.preventDefault ();
 
+	// Change the value of the quizStarted property when the quiz begins.
+
     if (store.quizStarted === false) store.quizStarted = true;
 
 	buildQuiz();
 	
   });
-
-  let test = '';
-
-  	$( '.quiz-app-form-button' ).on ( 'click', e => {
-		
-		//test = $( '.quiz-app-form-button' ); // object object
-		//test = $( '.quiz-app-form-button' ).contents (); // object object
-		//test = $( '.quiz-app-form-button' ).text (); // empty string
-		//test = $( '.quiz-app-form-button' ).html (); // empty string
-		//test = $( '.quiz-app-form-button' ).val (); // returns the first button in the heirarchy
-		//test = $( '.quiz-app-form-button' ).attr ( 'value' ); // returns the first button in the heirarchy
-		//test = $( '.quiz-app-form-button' ).innerHTML; // undefined
-		//test = e.currentTarget; // object HTMLInputElement
-		//test = e.currentTarget.contents (); // is not a function
-		//test = e.currentTarget.text (); // is not a function
-		//test = e.currentTarget.html (); // is not a function
-		//test = e.currentTarget.val (); // is not a function
-		//test = e.currentTarget.attr ( 'value' ); // is not a function
-		//test = e.currentTarget.innerHTML; // empty string
-		//test = e.this; // undefined
-		//test = this; // object window
-		  
-		//alert ( test );
-		//alert ( e.currentTarget === this ); // shows false
-		//alert ( e.currentTarget.id ); // empty string
-		//alert ( e.currentTarget.class ); // undefined
-		//alert ( e.currentTarget.is ); // undefined
-		//alert ( e.currentTarget.prop ); // undefined
-		
-		
-		//let elementType = document.getElementById ( e.currentTarget ).tagName;
-		//alert ( elementType ); // TYpeError cannot read property tagname of null
-
-		//checkQuestion ( this.text() );
-
-	});
 
   console.log ( 'buildQuiz completed' );
 
