@@ -42,11 +42,11 @@ const store = {
   score: 0,
 };
 
+ // Variable declarations for working with store data.
 let currentQuestion;
 let currentAnswers;
 let currentCorrectAnswer;
 let selectedAnswer;
-
 let html = `
 	<div class="wrapper">
 		<div id="quiz-container">
@@ -61,136 +61,18 @@ let html = `
 	</div>
 `;
 
-const render = () => {
 /*
-	This function is responsible for finding the relevant
-	information to be displayed and compiling that within html.
-	Finally, injecting that compilation into the main element
-	within the HTML document body.
+*	
+* This function changes button css to visually show focus 
+* on the currently selected answer. It also stores the value 
+* of the currently selected answer in the selectedAnswer variable.
+*	
 */
-
-  console.log ( 'render started' );
-
-  $( 'main' ).html ( html );
-
-  console.log ( 'render completed' );
-};
-
-const getContent = () => {
-/* 
-	This function is responsible for initializing the 
-	variable we need to work with and giving them data.
-*/
-
-  console.log ( 'pickQuestion started' );
-
-  // Creation of the variables with the info we need to work with:
-
-  currentQuestion = store.questions[ store.questionNumber ].question;
-
-  currentAnswers = store.questions[ store.questionNumber ].answers;
-
-  currentCorrectAnswer = store.questions[ store.questionNumber ].correctAnswer;
-
-  console.log ( 'pickQuestion completed' );
-};
-
-const generateHtml = ( option ) => {
-/* 
-
-	This function handles building the html for injection to the page.
-
-*/
-
-	console.log ( 'generateHtml started' );
-
-	if ( option === 'incorrect' ) {
-
-		html = `
-			<div class="wrapper">
-				<div id="quiz-container">
-					<h2>Incorrect!</h2>
-					<p>You currently have ${ store.score } answers.</p>
-					<p>Your next answer is loading in 3 seconds</p>
-					<p id="countdown"></p>
-				</div>
-			</div>
-		`;
-
-		return;
-
-	}
-
-	if ( store.quizStarted === true ) {
-		let liString = '';
-
-		// Iteration here to build the <li>s for insertion into the output HTML.
-
-		currentAnswers.forEach ( ( item, index ) => {
-
-			liString += `<li><input class="quiz-app-form-button" id="form-button-${ index }" type="button" value="${ item }" onclick="highlightSelection( '#form-button-${ index }' )" ></input></li>`;
-
-		});
-	
-		// HTML for injection.
-
-		html = `
-			<div class="wrapper">
-				<div id="quiz-container">
-					<form id="quiz-app-form" action="http://someform.php">
-						<legend id="quiz-app-form-legend">${ currentQuestion }</legend>
-							<ul id="quiz-app-form-ul"> 
-								${ liString }
-							</ul>
-							<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
-					</form>
-				</div>
-			</div>
-		`;
-	}
-
-	console.log ( 'generateHtml completed' );
-
-};
-
-const updateStore = ( option ) => {
-/*
-
-	This function will take in a variable and
-	based on that will update the store property
-	accordingly.
-
-*/
-	console.log ( 'updateStore started' );
-
-	// Update the quizStarted property when the quiz begins.
-
-	if ( store.quizStarted === false && option === 'x' ) store.quizStarted = true;
-
-	// Update questionNumber property in the store.
-	
-  	else if ( store.quizStarted !== false ) store.questionNumber++;
-  
-  	console.log ( store.questionNumber );
-
-	console.log ( 'updateStore completed' );
-
-}
-
 const highlightSelection = ( btn ) => {
-/*
-
-	This function changes button css to
-	visually show focus on the currently
-	selected answer. It also stores the
-	value of the currently selected question
-	in the selectedAnswer variable.
-
-*/
-
-	console.log ( 'highlightSelection started' );
+	
+	//console.log ( 'highlightSelection started' );
 		
-	// Reset any previous selections highlight
+	// Reset any previous selections highlight.
 
 	$( '.quiz-app-form-button' ).css( 'background-color', '#000' );
 
@@ -206,84 +88,164 @@ const highlightSelection = ( btn ) => {
 
 	selectedAnswer = $( btn ).val ();
 
-	console.log ( 'highlightSelection completed' );
-
+	//console.log ( 'highlightSelection completed' );
+	
 }
 
-const checkScreen = ( btn ) => {
 /*
-
-	This function displays a screen indicated an
-	incorrect answer has been submitted. It then
-	performs a countdown for 3 seconds before moving
-	to the next question.
-
+*
+* Function checks a selected answer and updates store.score if incorrect.
+*
 */
-
-
-
-}
-
 const checkAnswer = () => {
-/*
 
-	This function is passed the relevant button's id,
-	the value of the button is the selected answer,
-	that value is then compared to the correctAnswer property.
+	//console.log ( 'checkAnswer started' );
 
-*/
-
-	console.log ( 'checkAnswer started' );
-
-	// Checks for initial run.
-
-	if ( selectedAnswer !== undefined ) {
 	
-		console.log ( selectedAnswer);
-		console.log ( currentCorrectAnswer);
-		
+	if ( store.quizStarted !== false ) {
 
-	// Adjust the store.score property to keep track of incorrect answers.
-
-		if ( selectedAnswer !== currentCorrectAnswer ) {
-		
-			//store.score++;
-
-			generateHtml( 'incorrect' );
-	
-		}
+		if ( selectedAnswer !== currentCorrectAnswer ) store.score++;
 
 	}
 
-	console.log ( 'checkAnswer completed' );
+	//console.log ( 'checkAnswer completed' );
+
+}
+
+/*
+*
+* Function builds state based html for injection.
+* 
+*/
+const generateHTML = () => {
+
+	//console.log ( 'generateHTML started' );
+
+	// Grab the relevant question data for use.
+	if ( store.quizStarted === true  && store.questionNumber <= store.questions.length - 1 ) {
+
+		currentQuestion = store.questions[ store.questionNumber ].question;
+	
+		currentAnswers = store.questions[ store.questionNumber ].answers;
+
+		currentCorrectAnswer = store.questions[ store.questionNumber ].correctAnswer;
+	
+	}
+	
+	// If last form submission was the last question, render the quiz complete html.
+	if ( store.questionNumber > store.questions.length - 1 ) {
+		
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<h2>Congratulations!</h2>
+					<p>You have completed the quiz...<p>
+					<p>You have ${ store.score } incorrect answers out of ${ store.questions.length }<p>
+				</div>
+			</div>
+		`;
+
+	}
+
+	// Else build the question html for rendering.
+	else if ( store.quizStarted === true  && store.questionNumber <= store.questions.length ) {
+		
+		let liString = '';
+
+		// Iteration here to build the <li>s for insertion into the output HTML.
+		currentAnswers.forEach ( ( item, index ) => {
+
+			// I realize that there is a better way to implement the button click functionality
+			// through declaring an event handler rather than the onclick used here. This is an 
+			// improvement I would like to see made, but I struggled with the other implementation.
+			// - Bice
+			liString += `<li><input class="quiz-app-form-button" id="form-button-${ index }" type="button" value="${ item }" onclick="highlightSelection( '#form-button-${ index }' )" ></input></li>`;
+
+		});
+
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<form id="quiz-app-form" action="http://someform.php">
+						<legend id="quiz-app-form-legend">${ currentQuestion }</legend>
+							<ul id="quiz-app-form-ul"> 
+								${ liString }
+							</ul>
+							<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
+					</form>
+				</div>
+			</div>
+		`;
+
+	}
+
+	//console.log ( 'generateHTML completed' );
+
+}
+
+/*
+* 
+* Function is responsible for updating the state of quiz.
+* 
+*/
+const updateState = () => {
+
+	//console.log ( 'updateState started' );
+
+	// Initial page load.
+	if ( store.questionNumber === 0 && store.quizStarted === false ) {
+		
+		store.quizStarted = true;
+
+	} else { // Else on form submit.
+
+		store.questionNumber++;
+
+	}	
+	
+	//console.log ( 'updateState completed' );
 
 };
 
-const buildQuiz = ( option ) => {
-/* 
-
-	This function is responsible for calling all sub functions responsible
-	for a functioning quiz app.
-
+/*
+*
+* Function renders the content to the page.
+* 
 */
+const render = () => {
 
-	console.log ( 'buildQuiz started' );
+	//console.log ( 'render started' );
 
-	getContent ();
-	generateHtml ();
-	updateStore ( option );
+	$( 'main' ).html( html )
+
+	//console.log ( 'render completed' );
+
+}
+
+/* 
+*
+*	This function is responsible for calling all sub functions.
+*
+*/
+const buildQuiz = ( option ) => {
+
+	//console.log ( 'buildQuiz started' );
+
 	checkAnswer ();
+	generateHTML ();
+	updateState ();
 	render ();
 
+	// Button submit handler.
 	$( '#quiz-app-form' ).submit ( e => {
 
 		e.preventDefault ();
 		
-		buildQuiz ( 'x' );
+		buildQuiz ();
 
 	});
-
-	console.log ( 'buildQuiz completed' );
+	
+	//console.log ( 'buildQuiz completed' );
 
 };
 
