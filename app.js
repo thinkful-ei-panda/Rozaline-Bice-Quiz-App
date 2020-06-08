@@ -2,14 +2,14 @@ const store = {
   // 5 or more questions are required
   questions: [
     {
-      question: 'What color is broccoli?',
-      answers: ['red', 'orange', 'pink', 'green'],
-      correctAnswer: 'green',
+      question: 'What is broccoli?',
+      answers: ['An alien watchdog', 'A miniature tree', 'A form of torture', 'All of the above'],
+      correctAnswer: 'All of the above',
     },
     {
       question: 'What is the current year?',
-      answers: ['1970', '2015', '2019', '2005'],
-      correctAnswer: '2019',
+      answers: ['1970', '2015', '2020', '2005'],
+      correctAnswer: '2020',
     },
     {
       question: 'What is a dolpin?',
@@ -24,7 +24,7 @@ const store = {
     {
       question: 'What is Winnie the Pooh?',
       answers: ['A cartoon', 'A stuffed bear', 'A living creature', 'A severe delusion'],
-      correctAnswer: 'A cartoon',
+      correctAnswer: 'A severe delusion',
     },
     {
       question: 'What is Javascript?',

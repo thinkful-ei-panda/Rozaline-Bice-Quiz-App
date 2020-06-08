@@ -9,10 +9,12 @@
 ##### https://thinkful-ei-panda.github.io/Rozaline-Bice-Quiz-App/
 
 ### Gist:
-##### Gist: https://gist.github.com/certifiedbice/d1871831e18d738b92ce96fc7484bd86
+##### https://gist.github.com/certifiedbice/d1871831e18d738b92ce96fc7484bd86
 
 ### Technical Map:
 #### https://gitmind.com/app/doc/7db354824
+#### https://thinkful-ei-panda.github.io/Rozaline-Bice-Quiz-App/Rozaline-Bice-Quiz-App-Map.jpg
+#### https://thinkful-ei-panda.github.io/Rozaline-Bice-Quiz-App/Rozaline-Bice-Quiz-App-Map.pdf
 
 ### Napkin Plan - Quiz App
 
