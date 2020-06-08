@@ -19,7 +19,7 @@ const store = {
     {
       question: 'What is your level of pain?',
       answers: ['No pain', 'Discomfort', 'Intense', 'Unbearable'],
-      correctAnswer: '2019',
+      correctAnswer: 'Unbearable',
     },
     {
       question: 'What is Winnie the Pooh?',
@@ -43,23 +43,13 @@ const store = {
 };
 
  // Variable declarations for working with store data.
+let state = 0;
 let currentQuestion;
 let currentAnswers;
 let currentCorrectAnswer;
 let selectedAnswer;
-let html = `
-	<div class="wrapper">
-		<div id="quiz-container">
-			<form id="quiz-app-form" action="http://someform.php">
-				<legend id="quiz-app-form-legend">Click the button below if you dare...</legend>
-					<ul id="quiz-app-form-ul"> 
-		
-					</ul>
-					<button type="submit" id="quiz-app-form-submit-button">Begin</button>
-			</form>
-		</div>
-	</div>
-`;
+let quizLength = store.questions.length;
+let html;
 
 /*
 *	
@@ -94,21 +84,31 @@ const highlightSelection = ( btn ) => {
 
 /*
 *
-* Function checks a selected answer and updates store.score if incorrect.
-*
+* Function to check for undefined answers and 
+* reset the appropriate variables if found.
+* 
 */
-const checkAnswer = () => {
+const isAnswered = () => {
 
-	//console.log ( 'checkAnswer started' );
+	//console.log ( 'isAnswered started' );
 
-	
-	if ( store.quizStarted !== false ) {
+	// Reset selectedAnswer at the beginning of every question so the previous answer is flushed.
+	if ( state === 1 && selectedAnswer !== undefined ) {
 
-		if ( selectedAnswer !== currentCorrectAnswer ) store.score++;
+		selectedAnswer = undefined;
 
 	}
 
-	//console.log ( 'checkAnswer completed' );
+	// An undefined answer was submitted.
+	else if ( state === 2 && selectedAnswer === undefined ) {
+
+			state = 1;
+			
+			store.questionNumber--;
+
+	}
+
+	//console.log ( 'isAnswered completed' );
 
 }
 
@@ -121,35 +121,32 @@ const generateHTML = () => {
 
 	//console.log ( 'generateHTML started' );
 
-	// Grab the relevant question data for use.
-	if ( store.quizStarted === true  && store.questionNumber <= store.questions.length - 1 ) {
+	// Begin screen html.
+	if ( state === 0 ) {
 
-		currentQuestion = store.questions[ store.questionNumber ].question;
-	
-		currentAnswers = store.questions[ store.questionNumber ].answers;
-
-		currentCorrectAnswer = store.questions[ store.questionNumber ].correctAnswer;
-	
-	}
-	
-	// If last form submission was the last question, render the quiz complete html.
-	if ( store.questionNumber > store.questions.length - 1 ) {
-		
 		html = `
 			<div class="wrapper">
 				<div id="quiz-container">
-					<h2>Congratulations!</h2>
-					<p>You have completed the quiz...<p>
-					<p>You have ${ store.score } incorrect answers out of ${ store.questions.length }<p>
+					<form id="quiz-app-form" action="http://someform.php">
+						<legend id="quiz-app-form-legend">Click the button below if you dare...</legend>
+						<button type="submit" id="quiz-app-form-submit-button">Begin</button>
+					</form>
 				</div>
 			</div>
 		`;
 
 	}
 
-	// Else build the question html for rendering.
-	else if ( store.quizStarted === true  && store.questionNumber <= store.questions.length ) {
-		
+	// Question screen html.
+	if ( state === 1 ) {
+
+		// Grab the relevant question data for use.
+		currentQuestion = store.questions[ store.questionNumber ].question;
+	
+		currentAnswers = store.questions[ store.questionNumber ].answers;
+
+		currentCorrectAnswer = store.questions[ store.questionNumber ].correctAnswer;
+
 		let liString = '';
 
 		// Iteration here to build the <li>s for insertion into the output HTML.
@@ -173,39 +170,69 @@ const generateHTML = () => {
 							</ul>
 							<button type="submit" id="quiz-app-form-submit-button">Next Question</button>
 					</form>
+					<div>Total questions: ${ quizLength }</div>
+					<div>Unanswered questions: ${ quizLength - store.questionNumber }</div>
+					<div>Incorrect questions: ${ store.score }</div>
+					<div>Correct questions: ${ ( ( quizLength -( quizLength - store.questionNumber ) ) - store.score ) }</div>
+					
+					
 				</div>
 			</div>
 		`;
 
 	}
 
+	// Answer screen html.
+	else if ( state === 2 ) {
+
+		let answerMsg = '';
+		
+		if ( selectedAnswer !== currentCorrectAnswer ) answerMsg = 'Incorrect!';
+
+		else answerMsg = 'Correct!';
+
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<form id="quiz-app-form" action="http://someform.php">
+						<legend id="quiz-app-form-legend"><h2>${ answerMsg }</h2></legend>
+						<p>${ currentQuestion }<p>
+						<p>You chose: ${ selectedAnswer }</p>
+						<p>The correct answer was: ${ currentCorrectAnswer }</p>
+						<button type="submit" id="quiz-app-form-submit-button">Next question</button>
+					</form>
+				</div>
+			</div>
+		`;
+
+	}
+
+	// Quiz completed.
+	else if ( state === 3 ) {
+		
+		html = `
+			<div class="wrapper">
+				<div id="quiz-container">
+					<form id="quiz-app-form" action="http://someform.php">
+						<legend id="quiz-app-form-legend"><h2>Quiz Complete!</h2></legend>
+						<p>Congratulations, you're smart!<p>
+						<p>You answered ${ ( ( quizLength -( quizLength - store.questionNumber ) ) - store.score ) } of ${ quizLength } questions correctly.</p>
+						<button type="submit" id="quiz-app-form-submit-button">Take the quiz again?</button>
+					</form>
+				</div>
+			</div>
+		`;
+
+		// Reset for a retaking the quiz.
+		store.questionNumber = 0;
+		store.score = 0;
+		state = 0;
+
+	}
+	
 	//console.log ( 'generateHTML completed' );
 
 }
-
-/*
-* 
-* Function is responsible for updating the state of quiz.
-* 
-*/
-const updateState = () => {
-
-	//console.log ( 'updateState started' );
-
-	// Initial page load.
-	if ( store.questionNumber === 0 && store.quizStarted === false ) {
-		
-		store.quizStarted = true;
-
-	} else { // Else on form submit.
-
-		store.questionNumber++;
-
-	}	
-	
-	//console.log ( 'updateState completed' );
-
-};
 
 /*
 *
@@ -222,6 +249,67 @@ const render = () => {
 
 }
 
+/*
+* 
+* Function is responsible for updating the state of quiz.
+* 
+*/
+const updateState = () => {
+
+	//console.log ( 'updateState started' );
+
+	// Begin screen.
+	if ( state === 0 ) state++;
+	
+	// Question screen.
+	else if ( state === 1 ) state = 2;
+	
+	// Answer screen.
+	else if ( state === 2 && store.questionNumber < quizLength ) state = 1;
+	
+	// Quiz Complete screen.
+	else if ( state === 2 && store.questionNumber === quizLength ) state = 3;
+
+	//console.log ( 'updateState completed' );
+
+};
+
+/*
+*
+* Function increments store.score if an incorrect answer is submitted.
+*
+*/
+const updateScore = () => {
+
+	//console.log ( 'updateScore started' );
+
+	// Increment the store.score when an incorrect answer is submitted.
+	if ( selectedAnswer !== currentCorrectAnswer && selectedAnswer !== undefined ) store.score++;
+
+	//console.log ( 'updateScore completed' );
+
+}
+
+/*
+*
+* Function increments store.questionNumber.
+*
+*/
+const updateQuestion = () => {
+
+	//console.log ( 'updateQuestion started' );
+
+	// Increment questionNumber.
+	if ( state === 2 ) {
+		
+		store.questionNumber++;
+	
+	}
+
+	//console.log ( 'updateQuestion completed' );
+
+}
+
 /* 
 *
 *	This function is responsible for calling all sub functions.
@@ -231,12 +319,14 @@ const buildQuiz = ( option ) => {
 
 	//console.log ( 'buildQuiz started' );
 
-	checkAnswer ();
+	isAnswered ();
 	generateHTML ();
-	updateState ();
 	render ();
-
-	// Button submit handler.
+	updateState ();
+	updateScore ();
+	updateQuestion ();
+	
+	// Form submit handler.
 	$( '#quiz-app-form' ).submit ( e => {
 
 		e.preventDefault ();
@@ -249,5 +339,5 @@ const buildQuiz = ( option ) => {
 
 };
 
-// when the page loads, call `buildQuiz`.
+// On page load, call `buildQuiz`.
 $( buildQuiz );
